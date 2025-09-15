@@ -180,7 +180,7 @@ def Login(Op : int):
 
   case 2:
    clear()
-   global usrDue
+   global usr
    db=js.ReadJson(js.JSON_TIENDAS)
    while True:
              
@@ -189,16 +189,16 @@ def Login(Op : int):
             |        Bienvenido Dueño       |
             -----------------------------------
             """)
-      usrDue = input("Porfavor ingrese su usuario: ").upper().strip()
-      if usrDue in db:
+      usr = input("Porfavor ingrese su usuario: ").upper().strip()
+      if usr in db:
         while True: 
             print(f"""
             -----------------------------------
-            |        Bienvenido {usuario}     |
+            |        Bienvenido {usr}     |
             -----------------------------------
             """)
             ContraseñaRegistrada=input('Ingrese la contraseña de su cuenta: ').upper().strip()
-            if db[usrDue]["CONTRASEÑA"] == ContraseñaRegistrada: 
+            if db[usr]["CONTRASEÑA"] == ContraseñaRegistrada: 
                 return
             else:
                 print("Contraseña incorrecta")
@@ -216,11 +216,11 @@ def Login(Op : int):
             |        Bienvenido Usuario       |
             -----------------------------------
             """)
-      usuario=input("Porfavor ingrese su usuario: ").upper().strip()
-      if usuario in db:
+      usr=input("Porfavor ingrese su usuario: ").upper().strip()
+      if usr in db:
         while True: 
             ContraseñaRegistrada=input('Ingrese la contraseña de su cuenta: ').upper().strip()
-            if db[usuario]["CONTRASEÑA"] == ContraseñaRegistrada: 
+            if db[usr]["CONTRASEÑA"] == ContraseñaRegistrada: 
                 return
             else:
                 print("Contraseña incorrecta")
@@ -286,11 +286,35 @@ def AgregarProductoTienda():
                     print('Solo se pueden ingesar numeros..')
                     presionar()
 
+def EliminarProductoTienda():
+    global usr
+    db2=js.ReadJson(js.JSON_CUENTAS)
+    while True:
+       for g, i in db2[usr]["PRODUCTOS"].keys():
+                            print(f"""
+                                --------Producto--------
+                                Nombre: {g}
+                                Precio: {[usr]["PRODUCTOS"][g]["PRECIO"]}
+                                Cantidad: {[usr]["PRODUCTOS"][g]["CANTIDAD"]}
+                                """) 
+       while True:  
+            producto=input("Porfavor ingrese el nombre del producto que desea eliminar: ")
+            if producto in db2[usr]["PRODUCTOS"].keys():
+                del db2[usr]["PRODUCTOS"][producto]
+                print(f"Producto {producto} eliminado correctamente")
+                presionar()
+                op=ElminiarOtraVez()
+                if op == "S":
+                    break
+                else:
+                    return      
+        
+
+
 # Esta fincion guarda productos en un apartado llamado CARRITO 
 def AgregarProductoCarrito():
-    global usrDue
+    global usr
     db=js.ReadJson(js.JSON_TIENDAS)
-    db2=js.ReadJson(js.JSON_CUENTAS)
     while True:
         producto=str(input("Porfavor ingrese el nombre del producto que desea comprar: "))
         tienda=str(input("Ahora porfavor ingrese el nombre de la tienda que posee ese producto: "))
