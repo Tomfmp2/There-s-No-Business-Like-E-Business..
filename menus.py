@@ -1,3 +1,10 @@
+import js as js
+import json
+import os
+from typing import Dict, List
+
+JSON_TIENDAS = "data/JsonTiendas.json"
+
 def vistaprincipal():
 
     print("""
@@ -41,7 +48,34 @@ def vistaCuentaCreada():
     
     """)
 
-def 
+
+def mostrar_productos():
+
+    data = ReadJson(JSON_TIENDAS)
+
+    if not data:
+        print("No hay tiendas registradas.")
+        return
+    
+    print("\nProductos disponibles:\n")
+
+    for tienda, info in data.items():
+        print(f" Tienda: {tienda}")
+        productos: List[Dict] = info.get("productos", [])
+        if not productos:
+            print("   (Sin productos)\n")
+            continue
+        
+        for producto in productos:
+
+            print(f"   🔹 ID: {producto['id']}")
+            print(f"      Nombre: {producto['nombre']}")
+            print(f"      Precio: ${producto['precio']:,}")
+            print(f"      Stock: {producto['stock']}\n")
+
+    print(" ------Fin de lista-------.\n")
+
+    
 
 
 
