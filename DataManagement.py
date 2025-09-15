@@ -223,3 +223,20 @@ def Login(Op : int):
          print("Usuario no encontrado")
          clear()
          
+def MostrarProductos():
+    clear()
+    db = js.ReadJson(js.JSON_TIENDAS)
+    for x,i in db.items():
+        try:
+            for t in i:
+                if t == "PRODUCTOS":
+                    for g in i["r"].keys():
+                        prodcuto = g
+                        print(f"""
+                            --------Producto--------
+                            Producto: {prodcuto}
+                            Precio: {i["r"][g]}
+                            Tienda: {i["NOM"]}
+                            """)
+        except:
+            pass
