@@ -1,5 +1,8 @@
 import os
 import Modules.js as js
+# Variables globales
+usrDue = ""
+
 def clear (): # Limpiar pantalla
     os.system('cls' if os.name == 'nt' else 'clear')
 def presionar(): # Pausa o espera para seguir con la ejecucion
@@ -175,6 +178,7 @@ def Login(Op : int):
 
   case 2:
    clear()
+   global usrDue
    db=js.ReadJson(js.JSON_TIENDAS)
    while True:
              
@@ -183,7 +187,7 @@ def Login(Op : int):
             |        Bienvenido Dueño       |
             -----------------------------------
             """)
-      usrDue=input("Porfavor ingrese su usuario: ").upper().strip()
+      usrDue = input("Porfavor ingrese su usuario: ").upper().strip()
       if usrDue in db:
         while True: 
             print(f"""
@@ -222,7 +226,52 @@ def Login(Op : int):
       else: 
          print("Usuario no encontrado")
          clear()
-         
+
+def AgregarOtravez ():
+    clear()
+    while True: 
+        volverAgregar = input('¿Desea volver a agregar otro producto? (s/n):').upper()
+        match volverAgregar:
+            case "S":
+                return "S"
+            case "N":
+                return 
+            case _:
+                clear()
+                print('Opcion invalida.. ')
+                presionar()
+# Esta funcion agrega los productos a la tienda del vendedor 
+def AgregarProductoTienda():
+    db = js.ReadJson(js.JSON_TIENDAS)
+    global usrDue
+    while True:
+        nombreProducto = input('Ingrese el nombre del producto a Agregar:')
+        if nombreProducto in db: 
+            clear()
+            print('Nombre de producto ya registrado.. intenete otra vez')
+            presionar()
+        else:
+            clear()
+            
+            while True:
+                try:
+                    precio = int(input(f'Ingrese el Precio del producto {nombreProducto}:\n'))
+                    producto =  {nombreProducto:precio}
+                    
+                    js.UpdateJson(js.JSON_TIENDAS, producto, [usrDue]["PRODUCTOS"])
+                    AgregarOtravez()
+                    if AgregarOtravez == "S":
+                        break
+                    else:                            
+                        return
+                except ValueError:
+                    clear()
+                    print('Solo se pueden ingesar numeros..')
+                    presionar()
+
+# Esta fincion guarda productos en un aparatado llamado CARRITO 
+def AgregarProductoCarrito():
+    pass
 def MostrarProductos():
     clear()
     db = js.ReadJson(js.JSON_TIENDAS)
