@@ -2,7 +2,7 @@ import os
 import Modules.js as js
 def clear (): # Limpiar pantalla
     os.system('cls' if os.name == 'nt' else 'clear')
-def precionar(): # Pausa o espera para seguir con la ejecucion
+def presionar(): # Pausa o espera para seguir con la ejecucion
     input("\nPresione Enter para continuar...")
 
 def InicarJsons(): # Funcion para iniciar los archivos json
@@ -23,7 +23,7 @@ def RegistrarNombre():
             return Nombre
       except ValueError as e:
          print(f"Error: {e}. Intente de nuevo.")
-         precionar()
+         presionar()
 # funcion para registrar nombre de usuario
 def RegistrarUser():
     while True:
@@ -33,11 +33,11 @@ def RegistrarUser():
         if RegistroUser in Datos:
             clear()
             print("El nombre de usuario ya existe. Por favor, elija otro.")
-            precionar()
+            presionar()
         elif not RegistroUser.strip():
             clear()
             print("El nombre de usuario no puede estar vacío.")
-            precionar()
+            presionar()
         else:
             return RegistroUser
 
@@ -50,16 +50,16 @@ def RegistrarEdad ():
             if edad < 0:
                 clear()
                 print("La edad debe ser un numero positivo")
-                precionar()
+                presionar()
             elif 0 <= edad < 18:
                 clear()
                 print("Debes ser mayor de edad para registrarse")
-                precionar()
+                presionar()
             else:
                 return edad
         except ValueError:
             print("Por favot Solo ingrese numeros")
-            precionar()
+            presionar()
 
 # funcion para registrar telefono
 def RegistrarTelefono ():
@@ -124,17 +124,33 @@ def RegistrarDireccion():
                 return Direccion
         except ValueError as e:
             print(f"Error: {e}. Intente de nuevo.")
-            precionar()
+            presionar()
 
+def RegistrarContraseña():
+    while True:
+        clear()
+        Contraseña = str(input("Ingrese su contraseña: "))
+        ConfirmarContraseña = str(input("Confirme su contraseña: "))
+        if Contraseña != ConfirmarContraseña:
+            clear()
+            print("Las contraseñas no coinciden. Intente de nuevo.")
+            presionar()
+        elif not Contraseña.strip():
+            clear()
+            print("La contraseña no puede estar vacía.")
+            presionar()
+        else:
+            return Contraseña
+        
 # funcion para registrar usuario
 def RegistrarCuentaUsuario():
     diccionario ={
-        RegistrarUser: {
+        RegistrarUser(): {
         "NOMBRE": RegistrarNombre(),
         "EDAD": RegistrarEdad(),
         "TELEFONO": RegistrarTelefono(),
         "DIRECCION": RegistrarDireccion(), 
-        "PRODUCTOS": []
+        "CONTRASEÑA": RegistrarContraseña(),
                   }
     }
     js.UpdateJson(js.JSON_CUENTAS, diccionario)
@@ -142,11 +158,12 @@ def RegistrarCuentaUsuario():
 # funcion para registrar cuneta de vendedor
 def RegistrarVendedor():
     diccionario ={
-        RegistrarUser: {
+        RegistrarUser(): {
         "NOMBRE": RegistrarNombre(),
         "EDAD": RegistrarEdad(),
         "TELEFONO": RegistrarTelefono(),
-        "D": RegistrarDireccion(), 
+        "DIRECCION": RegistrarDireccion(),
+        "CONTRASEÑA": RegistrarContraseña(),
         "PRODUCTOS": []
                   }
     }
