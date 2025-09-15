@@ -11,7 +11,8 @@ def presionar(): # Pausa o espera para seguir con la ejecucion
     input("\nPresione Enter para continuar...")
 
 def InicarJsons(): # Funcion para iniciar los archivos json
-    js.WriteJson(js.JSON_CUENTAS, {})
+    js.InitJson(js.JSON_CUENTAS, {})
+    js.InitJson(js.JSON_TIENDAS, {})
 
 # funcion para registrar nombre
 def RegistrarNombre():
@@ -155,7 +156,7 @@ def RegistrarCuentaUsuario():
         "EDAD": RegistrarEdad(),
         "TELEFONO": RegistrarTelefono(),
         "DIRECCION": RegistrarDireccion(), 
-        "CONTRASEÑA": RegistrarContraseña(),
+        "CONTRASENA": RegistrarContraseña(),
         "CARRITO":{}
                   }
     }
@@ -169,11 +170,11 @@ def RegistrarVendedor():
         "EDAD": RegistrarEdad(),
         "TELEFONO": RegistrarTelefono(),
         "DIRECCION": RegistrarDireccion(),
-        "CONTRASEÑA": RegistrarContraseña(),
+        "CONTRASENA": RegistrarContraseña(),
         "PRODUCTOS": {}
                   }
     }
-    js.UpdateJson(js.JSON_CUENTAS, diccionario)
+    js.UpdateJson(js.JSON_TIENDAS, diccionario)
 
 def Login(Op : int):
  # Esta funcion permite iniciar sesion en la aplicacion
@@ -199,7 +200,7 @@ def Login(Op : int):
             -----------------------------------
             """)
             ContraseñaRegistrada=input('Ingrese la contraseña de su cuenta: ').upper().strip()
-            if db[usr]["CONTRASEÑA"] == ContraseñaRegistrada: 
+            if db[usr]["CONTRASENA"] == ContraseñaRegistrada: 
                 return
             else:
                 print("Contraseña incorrecta")
@@ -221,7 +222,7 @@ def Login(Op : int):
       if usr in db:
         while True: 
             ContraseñaRegistrada=input('Ingrese la contraseña de su cuenta: ').upper().strip()
-            if db[usr]["CONTRASEÑA"] == ContraseñaRegistrada: 
+            if db[usr]["CONTRASENA"] == ContraseñaRegistrada: 
                 return
             else:
                 print("Contraseña incorrecta")
