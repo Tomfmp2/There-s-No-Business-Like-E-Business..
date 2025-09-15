@@ -17,6 +17,8 @@ def seleccionar_idioma():
         2. English
     ====================================
     """)
+
+"""
     while True:
         opcion = input("Ingrese una opción: ")
         if opcion == "1":
@@ -27,7 +29,7 @@ def seleccionar_idioma():
             print("⚠️ Opción no válida")
             dm.presionar()
             dm.clear()
-
+"""
 # Menú principal
 
 def menu_principal():
@@ -57,7 +59,6 @@ def menu_principal():
             else:
                 print("⚠️ Opción inválida")
             dm.presionar()
-
         elif opcion == "2":
             dm.clear()
             print("¿Desea iniciar sesión como?\n1. Usuario\n2. Dueño/Vendedor")
@@ -67,7 +68,7 @@ def menu_principal():
                 if tipo == "1":
                     menu_usuario()
                 else:
-                    menu_dueno()
+                    menu_dueño()
             else:
                 print("⚠️ Opción inválida")
                 dm.presionar()
@@ -136,7 +137,7 @@ def subMenuUsusario():
 
 # Menú dueño/vendedor
 
-def menu_dueno():
+def menu_dueño():
     while True:
         dm.clear()
         print("""
@@ -149,22 +150,23 @@ def menu_dueno():
             4. Cerrar sesión
         ================================
         """)
+"""def uno():
         opcion = input("Seleccione una opción: ")
-        if opcion == "1":
-            dm.MostrarProductos()
-            dm.presionar()
-        elif opcion == "2":
-            dm.AgregarProductoTienda()
-            dm.presionar()
-        elif opcion == "3":
-            dm.EliminarProductoTienda()
-            dm.presionar()
-        elif opcion == "4":
-            break
-        else:
-            print("⚠️ Opción inválida")
-            dm.presionar()
-
+    if opcion == "1":
+        dm.MostrarProductos()
+        dm.presionar()
+    elif opcion == "2":
+        dm.AgregarProductoTienda()
+        dm.presionar()
+    elif opcion == "3":
+        dm.EliminarProductoTienda()
+        dm.presionar()
+    elif opcion == "4":
+        break
+    else:
+        print("⚠️ Opción inválida")
+        dm.presionar()
+"""
 def metodoPago():
     while True:
         dm.clear()
@@ -184,7 +186,7 @@ def metodoPago():
             pass 
         elif opcion == 2:
             pass
-        elif opcion == 3:|
+        elif opcion == 3:
             pass
         else:
             dm.clear()
