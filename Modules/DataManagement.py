@@ -1,10 +1,11 @@
 import os
 import Modules.js as js
 # Variables globales
-usrDue = ""
+usr = ""
 
 def clear (): # Limpiar pantalla
     os.system('cls' if os.name == 'nt' else 'clear')
+
 def presionar(): # Pausa o espera para seguir con la ejecucion
     input("\nPresione Enter para continuar...")
 
@@ -154,6 +155,7 @@ def RegistrarCuentaUsuario():
         "TELEFONO": RegistrarTelefono(),
         "DIRECCION": RegistrarDireccion(), 
         "CONTRASEÑA": RegistrarContraseña(),
+        "CARRITO":{}
                   }
     }
     js.UpdateJson(js.JSON_CUENTAS, diccionario)
@@ -167,7 +169,7 @@ def RegistrarVendedor():
         "TELEFONO": RegistrarTelefono(),
         "DIRECCION": RegistrarDireccion(),
         "CONTRASEÑA": RegistrarContraseña(),
-        "PRODUCTOS": []
+        "PRODUCTOS": {}
                   }
     }
     js.UpdateJson(js.JSON_CUENTAS, diccionario)
@@ -243,12 +245,12 @@ def AgregarOtravez ():
 # Esta funcion agrega los productos a la tienda del vendedor 
 def AgregarProductoTienda():
     db = js.ReadJson(js.JSON_TIENDAS)
-    global usrDue
+    global usr
     while True:
         nombreProducto = input('Ingrese el nombre del producto a Agregar:')
         if nombreProducto in db: 
             clear()
-            print('Nombre de producto ya registrado.. intenete otra vez')
+            print('Nombre de producto ya registrado.. intente otra vez')
             presionar()
         else:
             clear()
@@ -258,7 +260,7 @@ def AgregarProductoTienda():
                     precio = int(input(f'Ingrese el Precio del producto {nombreProducto}:\n'))
                     producto =  {nombreProducto:precio}
                     
-                    js.UpdateJson(js.JSON_TIENDAS, producto, [usrDue]["PRODUCTOS"])
+                    js.UpdateJson(js.JSON_TIENDAS, producto, [usr]["PRODUCTOS"])
                     AgregarOtravez()
                     if AgregarOtravez == "S":
                         break
@@ -271,7 +273,38 @@ def AgregarProductoTienda():
 
 # Esta fincion guarda productos en un aparatado llamado CARRITO 
 def AgregarProductoCarrito():
-    pass
+    global usrDue
+    db=js.ReadJson(js.JSON_TIENDAS)
+    db2=js.ReadJson(js.JSON_CUENTAS)
+    while True:
+        producto=str(input("Porfavor ingrese el nombre del producto que desea comprar: "))
+        tienda=str(input("Ahora porfavor ingrese el nombre de la tienda que posee ese producto: "))
+        if tienda in db:
+            while True:
+                if producto in db[tienda]["PRODUCTOS"]:
+                    cantidad=int(input("Porfavor ingrese la cantidad del producto que desea agregar al carrito: "))
+                    while True: 
+                        if cantidad > 0 and db[tienda]["PRODUCTOS"][producto]["CANTIDAD"] > cantidad:
+                            dic={
+                                producto: {
+                                "CANTIDAD": cantidad,
+                                "PRECIO": db[tienda]["PRODUCTOS"][producto]["VALOR"]
+                                    }
+                                }
+                            js.UpdateJson(js.JSON_CUENTAS, dic, [usr]["CARRITO"])
+                            print(f"El producto {producto} de la tienda {tienda} a sido agregado correctamente a su carrito")
+                            presionar()
+                            return
+                        else:
+                            print("El valor ingresado no es soportado, intente de nuevo porfavor")
+                            presionar()
+                else:
+                    print("El producto que ha ingresado no se encuentra en la tienda mencionada")
+                    presionar()
+        else:
+            print("La tienda que ha ingresado no se encuentra registrada")
+            presionar()
+
 def MostrarProductos():
     clear()
     db = js.ReadJson(js.JSON_TIENDAS)
