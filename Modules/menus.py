@@ -128,7 +128,7 @@ def subMenuUsusario():
         if opcion == 1:
             dm.AgregarProductoCarrito()
         elif opcion == 2:
-            pass # Pendiente funcion
+            dm.EliminarDelCarrito()
         else:
             break
 
@@ -155,10 +155,9 @@ def menu_dueno():
             dm.presionar()
         elif opcion == "2":
             dm.AgregarProductoTienda()
-            dm.AgregarOtravez()
             dm.presionar()
         elif opcion == "3":
-            print("Pendiente funcion")  #pendiente funcionn
+            dm.EliminarProductoTienda()
             dm.presionar()
         elif opcion == "4":
             break
@@ -176,7 +175,6 @@ def metodoPago():
             - 1. Tarjeta de credito *
             - 2. Tarjeta debito     *
             - 3. PSE                *
-            - 4. Salir              *
                                     *
         =============================
 
@@ -186,7 +184,7 @@ def metodoPago():
             pass 
         elif opcion == 2:
             pass
-        elif opcion == 3:
+        elif opcion == 3:|
             pass
         else:
             dm.clear()
@@ -213,10 +211,10 @@ def vistaAdmin():
                 dm.MostrarProductos()
                 dm.presionar()
             case "2":
-                print("Pendiente funcion")
+                dm.AgregarProductoTienda()
                 dm.presionar()
             case "3":
-                print("Pendiente funcion")
+                dm.EliminarProductoTienda()
                 dm.presionar()
             case "4":
                 break
