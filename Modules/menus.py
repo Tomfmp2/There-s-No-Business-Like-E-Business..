@@ -1,26 +1,21 @@
 from typing import Dict, List
 import os
 import Modules.js as js
+import Modules.DataManagement as dm
 
 JSON_TIENDAS = "data/JsonTiendas.json"
-
-def clear():
-    os.system('cls')
-
-def presionar():
-    input("\nPresione Enter para continuar...")
-
 
 # Menú de idiomas
 
 def seleccionar_idioma():
-    clear()
+    dm.clear()
     print("""
-    ===================================
-            🌍 Seleccione idioma
-    ===================================
-    1. Español
-    2. English
+    ====================================
+    --------🌍 Seleccione idioma--------
+    ====================================
+        1. Español
+        2. English
+    ====================================
     """)
     while True:
         opcion = input("Ingrese una opción: ")
@@ -30,67 +25,68 @@ def seleccionar_idioma():
             return "en"
         else:
             print("⚠️ Opción no válida")
-            presionar()
-            clear()
+            dm.presionar()
+            dm.clear()
 
 # Menú principal
 
 def menu_principal():
     while True:
-        clear()
+        dm.clear()
         print("""
-        ===================================
-                🛒 E-Commerce
-        ===================================
-        1. Registrarse
-        2. Iniciar sesión
-        3. Salir
+        =============================
+        --------🛒 E-Commerce--------
+        =============================
+            1. Registrarse
+            2. Iniciar sesión
+            3. Salir
+        =============================
         """)
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            clear()
+            dm.clear()
             print("¿Desea registrarse como?\n1. Usuario\n2. Vendedor")
             tipo = input("Seleccione: ")
             if tipo == "1":
-                RegistrarCuentaUsuario()
+                dm.RegistrarCuentaUsuario()
                 print("✅ Usuario registrado con éxito")
             elif tipo == "2":
-                RegistrarVendedor()
+                dm.RegistrarVendedor()
                 print("✅ Vendedor registrado con éxito")
             else:
                 print("⚠️ Opción inválida")
-            presionar()
+            dm.presionar()
 
         elif opcion == "2":
-            clear()
+            dm.clear()
             print("¿Desea iniciar sesión como?\n1. Usuario\n2. Dueño/Vendedor")
             tipo = input("Seleccione: ")
             if tipo in ["1", "2"]:
-                Login(int(tipo))
+                dm.Login(int(tipo))
                 if tipo == "1":
                     menu_usuario()
                 else:
                     menu_dueno()
             else:
                 print("⚠️ Opción inválida")
-                presionar()
+                dm.presionar()
 
         elif opcion == "3":
-            clear()
+            dm.clear()
             print("👋 Gracias por usar el sistema")
             break
 
         else:
             print("⚠️ Opción no válida")
-            presionar()
+            dm.presionar()
 
 
 # Menú usuario
 
 def menu_usuario():
     while True:
-        clear()
+        dm.clear()
         print("""
         ===================================
                 👤 Menú Usuario
@@ -101,23 +97,23 @@ def menu_usuario():
         """)
         opcion = input("Seleccione una opción: ")
         if opcion == "1":
-            MostrarProductos()
+            dm.MostrarProductos()
             subMenuUsusario()
-            presionar()
+            dm.presionar()
         elif opcion == "2":
             metodoPago()  #Falta funcionnnnn
-            presionar()
+            dm.presionar()
         elif opcion == "3":
             break
         else:
             print("⚠️ Opción inválida")
-            presionar()
+            dm.presionar()
 
 # submenu para agregar o quitar producto
 
 def subMenuUsusario():
-    while True
-        clear()
+    while True:
+        dm.clear()
         print("""
         =========================
         ---❓Que deseas hacer---
@@ -128,8 +124,9 @@ def subMenuUsusario():
         =========================
 
         """)
+        opcion = int(input("Ingrese una opcion: "))
         if opcion == 1:
-            AgregarProductoCarrito()
+            dm.AgregarProductoCarrito()
         elif opcion == 2:
             pass # Pendiente funcion
         else:
@@ -141,64 +138,88 @@ def subMenuUsusario():
 
 def menu_dueno():
     while True:
-        clear()
+        dm.clear()
         print("""
-        ===================================
-            🏪 Menú Vendedor
-        ===================================
-        1. Ver productos
-        2. Agregar producto
-        3. Eliminar producto
-        4. Cerrar sesión
+        ================================
+        --------🏪 Menú Vendedor--------
+        ================================
+            1. Ver productos
+            2. Agregar producto
+            3. Eliminar producto
+            4. Cerrar sesión
+        ================================
         """)
         opcion = input("Seleccione una opción: ")
         if opcion == "1":
-            MostrarProductos()
-            presionar()
+            dm.MostrarProductos()
+            dm.presionar()
         elif opcion == "2":
-            AgregarProductoTienda()
-            AgregarOtravez ()
-            presionar()
+            dm.AgregarProductoTienda()
+            dm.AgregarOtravez()
+            dm.presionar()
         elif opcion == "3":
             print("Pendiente funcion")  #pendiente funcionn
-            presionar()
+            dm.presionar()
         elif opcion == "4":
             break
         else:
             print("⚠️ Opción inválida")
-            presionar()
+            dm.presionar()
 
 def metodoPago():
-    while True
-        clear()
-            print(""" 
-            =============================
-            --💳Elije el metodo de pago--
-            =============================
-            - 1. Tarjeta de credito     *
-            - 2. Tarjeta debito         *
-            - 3. PSE                    *
-            - 4. Salir                  *
-            ____________________________*
+    while True:
+        dm.clear()
+        print(""" 
+        =============================
+        --💳Elije el metodo de pago--
+        =============================
+            - 1. Tarjeta de credito *
+            - 2. Tarjeta debito     *
+            - 3. PSE                *
+            - 4. Salir              *
+                                    *
+        =============================
 
+        """)
+        opcion = int(input('Ingrese una opcion: '))
+        if opcion == 1:
+            pass 
+        elif opcion == 2:
+            pass
+        elif opcion == 3:
+            pass
+        else:
+            dm.clear()
+            print('Ingreso una opcion valida')
+            dm.presionar()
+            
+            
+def vistaAdmin():
+    while True:
+        dm.clear()
+        print("""
+=============================
+--------🛠️ Menú Admin--------
+=============================
+    1. Ver productos
+    2. Agregar producto
+    3. Eliminar producto
+    4. Salir
+=============================
             """)
-            opcion = int(input('Ingrese una opcion: '))
-                if opcion == 1:
-                    pass 
-                elif opcion == 2:
-                    pass
-                elif opcion == 3:
-                    pass
-                else:
-                    print('Ingrese una opcion valida')
-                    return
-                
-
-
-
-
-
-
-
-
-
+        opcion = input("Seleccione una opción: ")
+        match opcion:
+            case "1":
+                dm.MostrarProductos()
+                dm.presionar()
+            case "2":
+                print("Pendiente funcion")
+                dm.presionar()
+            case "3":
+                print("Pendiente funcion")
+                dm.presionar()
+            case "4":
+                break
+            case _:
+                print("⚠️ Opción inválida")
+                dm.presionar()

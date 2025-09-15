@@ -242,6 +242,21 @@ def AgregarOtravez ():
                 clear()
                 print('Opcion invalida.. ')
                 presionar()
+
+def CantidadProductos():
+    while True:
+        try:
+            cantidad = int(input('Ingrese la cantidad del producto: '))
+            if cantidad > 0:
+                return cantidad
+            else:
+                clear()
+                print('La cantidad debe ser un numero positivo')
+                presionar()
+        except ValueError:
+            clear()
+            print('Por favor solo ingrese NUMEROS....')
+            presionar()
 # Esta funcion agrega los productos a la tienda del vendedor 
 def AgregarProductoTienda():
     db = js.ReadJson(js.JSON_TIENDAS)
@@ -258,7 +273,13 @@ def AgregarProductoTienda():
             while True:
                 try:
                     precio = int(input(f'Ingrese el Precio del producto {nombreProducto}:\n'))
-                    producto =  {nombreProducto:precio}
+                    cantidad = CantidadProductos()
+                    producto =  {
+                        nombreProducto:{
+                            "PRECIO": precio,
+                            "CANTIDAD": cantidad
+                        }
+                                }
                     
                     js.UpdateJson(js.JSON_TIENDAS, producto, [usr]["PRODUCTOS"])
                     AgregarOtravez()
