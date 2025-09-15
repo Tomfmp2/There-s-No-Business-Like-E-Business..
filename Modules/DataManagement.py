@@ -257,6 +257,23 @@ def ElminiarOtraVez():
                 print('Opcion invalida.. ')
                 presionar()
 
+
+def CantidadProducto():
+    while True:
+        clear()
+        try:
+            cantidad = int(input('Ingrese la cantidad del producto: '))
+            if cantidad <= 0:
+                clear()
+                print('La cantidad debe ser un numero positivo')
+                presionar()
+            else:
+                return cantidad
+        except ValueError:
+            clear()
+            print('Solo se pueden ingesar numeros..')
+            presionar()
+
 # Esta funcion agrega los productos a la tienda del vendedor 
 def AgregarProductoTienda():
     db = js.ReadJson(js.JSON_TIENDAS)
@@ -273,7 +290,13 @@ def AgregarProductoTienda():
             while True:
                 try:
                     precio = int(input(f'Ingrese el Precio del producto {nombreProducto}:\n'))
-                    producto =  {nombreProducto:precio}
+                    cantidad = CantidadProducto()
+                    producto =  {nombreProducto:{
+                            "PRECIO": precio,
+                            "CANTIDAD": cantidad
+                            }
+                        
+                        }
                     
                     js.UpdateJson(js.JSON_TIENDAS, producto, [usr]["PRODUCTOS"])
                     opcion=AgregarOtravez()
