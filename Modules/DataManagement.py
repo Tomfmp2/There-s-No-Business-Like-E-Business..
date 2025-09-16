@@ -19,7 +19,7 @@ def RegistrarNombre():
    while True:
       clear()
       try:   
-         Nombre=str(input("Ingrese su nombre: "))
+         Nombre=str(input("Ingrese su nombre: ")).strip().upper()
          if not Nombre.strip():
             raise ValueError("El nombre no puede estar vacío.")
             Oprimir()
@@ -135,8 +135,8 @@ def RegistrarDireccion():
 def RegistrarContraseña():
     while True:
         clear()
-        Contraseña = str(input("Ingrese su contraseña: "))
-        ConfirmarContraseña = str(input("Confirme su contraseña: "))
+        Contraseña = str(input("Ingrese su contraseña: ")).strip().upper()
+        ConfirmarContraseña = str(input("Confirme su contraseña: ")).strip().upper()
         if Contraseña != ConfirmarContraseña:
             clear()
             print("Las contraseñas no coinciden. Intente de nuevo.")
@@ -239,7 +239,7 @@ def Login(Op : int):
 def AgregarOtravez ():
     clear()
     while True: 
-        volverAgregar = input('¿Desea volver a agregar otro producto? (s/n):').upper()
+        volverAgregar = input('¿Desea volver a agregar otro producto? (s/n):').strip().upper()
         match volverAgregar:
             case "S":
                 return "S"
@@ -253,7 +253,7 @@ def AgregarOtravez ():
 def ElminiarOtraVez():
     clear()
     while True: 
-        volverAgregar = input('¿Desea volver a eliminar otro producto? (s/n):').upper()
+        volverAgregar = input('¿Desea volver a eliminar otro producto? (s/n):').strip().upper()
         match volverAgregar:
             case "S":
                 return "S"
@@ -286,7 +286,7 @@ def AgregarProductoTienda():
     db = js.ReadJson(js.JSON_TIENDAS)
     global usr
     while True:
-        nombreProducto = input('Ingrese el nombre del producto a Agregar:')
+        nombreProducto = input('Ingrese el nombre del producto a Agregar:').strip().upper()
         if nombreProducto in db[usr]["PRODUCTOS"]: 
             clear()
             print('Nombre de producto ya registrado.. intente otra vez')
@@ -318,15 +318,19 @@ def EliminarProductoTienda():
     global usr
     db2=js.ReadJson(js.JSON_TIENDAS)
     while True:
+       clear()
        for g, i in db2[usr]["PRODUCTOS"].items():
                             print(f"""
-                                --------Producto--------
-                                Nombre: {g}
-                                Precio: {i["PRECIO"]}
-                                Cantidad: {i["CANTIDAD"]}
+========================
+--------Producto--------
+========================
+    Nombre: {g}
+    Precio: {i["PRECIO"]}
+    Cantidad: {i["CANTIDAD"]}
+========================
                                 """) 
        while True:  
-            producto=input("Porfavor ingrese el nombre del producto que desea eliminar: ")
+            producto=input("Porfavor ingrese el nombre del producto que desea eliminar: ").strip().upper()
             if producto in db2[usr]["PRODUCTOS"].keys():
                 del db2[usr]["PRODUCTOS"][producto]
                 js.UpdateJson(js.JSON_TIENDAS, db2)
@@ -336,18 +340,101 @@ def EliminarProductoTienda():
                 if op == "S":
                     break
                 else:
-                    return      
-        
+                    return
+            else:
+                clear()
+                print("El producto que ha ingresado no se encuentra en su tienda")
+                slr = input("Desea intentarlo de nuevo? (S/N): ").strip().upper()
+                match slr:
+                    case "S":
+                        break
+                    case "N":
+                        return
+                    case _:
+                        print("Opcion no valida")   
+                        presionar()  
+                presionar()      
 
+def VerProductosMiTienda():
+    global usr
+    db = js.ReadJson(js.JSON_TIENDAS)
 
+    if usr not in db:
+        print(f"El usuario '{usr}' no existe en la base de datos")
+        return
+    
+    if "PRODUCTOS" not in db[usr]:
+        print(f"El usuario '{usr}' no tiene productos registrados")
+        return
+
+    productos = db[usr]["PRODUCTOS"]
+
+    if not productos:
+        print("No hay productos para mostrar")
+        return
+
+    while True:
+        clear()  # limpia la pantalla cada vez que se muestran los productos
+
+        for g, i in productos.items():
+            print(f"""
+========================
+--------Producto--------
+========================
+    Nombre: {g}
+    Precio: {i["PRECIO"]}
+    Cantidad: {i["CANTIDAD"]}
+========================
+            """)
+
+        seguir = input("¿Desea seguir viendo sus productos? (S/N): ").strip().upper()
+        if seguir == "S":
+            continue  # vuelve al inicio del while y refresca la pantalla
+        elif seguir == "N":
+            break      # sale del while y termina la función
+        else:
+            print("Opción no válida")
+            presionar()  # pausar antes de reintentar
+
+def VerProductosCarrito():
+    clear()
+    global usr
+    db = js.ReadJson(js.JSON_CUENTAS)
+    total = 0
+    if not db[usr]["CARRITO"]:
+        print("No hay productos en el carrito")
+        presionar()
+        return
+    for g, i in db[usr]["CARRITO"].items():
+                            print(f"""
+========================
+--------Producto--------
+======================== 
+    Nombre: {g}
+    Precio: {i["PRECIO"]}
+    Cantidad: {i["CANTIDAD"]}   
+========================
+                                """)
+    total += db[usr]["CARRITO"][g]["PRECIO"]
+    print(f"El Valor total del carrito es de {total}")
+    while True:
+        op = input("¿Desea proceder al pago? (S/N): ").strip().upper()
+        match op:
+            case "S":
+                return
+            case "N":
+                continue
+            case _:
+                print("Valor no soportado")
+                presionar()
 # Esta fincion guarda productos en un apartado llamado CARRITO 
 def AgregarProductoCarrito():
     global usr
     db=js.ReadJson(js.JSON_TIENDAS)
     db2=js.ReadJson(js.JSON_CUENTAS)
     while True:
-        producto=str(input("Porfavor ingrese el nombre del producto que desea comprar: "))
-        tienda=str(input("Ahora porfavor ingrese el nombre de la tienda que posee ese producto: "))
+        producto=str(input("Porfavor ingrese el nombre del producto que desea comprar: ")).strip().upper()
+        tienda=str(input("Ahora porfavor ingrese el nombre de la tienda que posee ese producto: ")).strip().upper()
         if tienda in db:
             while True:
                 if producto in db[tienda]["PRODUCTOS"] and producto not in db2[usr]["CARRITO"]:
@@ -357,7 +444,7 @@ def AgregarProductoCarrito():
                             dic={
                                 producto: {
                                 "CANTIDAD": cantidad,
-                                "PRECIO": db[tienda]["PRODUCTOS"][producto]["VALOR"]
+                                "PRECIO": db[tienda]["PRODUCTOS"][producto]["PRECIO"]
                                     }
                                 }
                             js.UpdateJson(js.JSON_CUENTAS, dic, [usr, "CARRITO"])
@@ -393,6 +480,7 @@ def AgregarProductoCarrito():
                 else:
                     print("El producto que ha ingresado no se encuentra en la tienda mencionada")
                     presionar()
+                    break
         else:
             print("La tienda que ha ingresado no se encuentra registrada")
             presionar()
@@ -403,13 +491,16 @@ def EliminarDelCarrito():
         db=js.ReadJson(js.JSON_CUENTAS)
         for g, i in db[usr]["CARRITO"].keys():
                             print(f"""
-                                --------Producto--------
-                                Nombre: {g}
-                                Precio: {[usr]["CARRITO"][g]["PRECIO"]}
-                                Cantidad: {[usr]["CARRITO"][g]["CANTIDAD"]}
-                                """)
+====================================                            
+--------------Producto--------------
+====================================                                
+    Nombre: {g}
+    Precio: {[usr]["CARRITO"][g]["PRECIO"]}
+    Cantidad: {[usr]["CARRITO"][g]["CANTIDAD"]}
+====================================
+""")
         while True:  
-            producto=input("Porfavor ingrese el nombre del producto que desea eliminar de su carrito: ")
+            producto=input("Porfavor ingrese el nombre del producto que desea eliminar de su carrito: ").strip().upper()
             if producto in db[usr]["CARRITO"].keys():
                 del db[usr]["CARRITO"][producto]
                 print(f"Producto {producto} eliminado correctamente")
@@ -419,97 +510,145 @@ def EliminarDelCarrito():
                     break
                 else:
                     return
+            else:
+                print("El producto que ha ingresado no se encuentra en su carrito")
+                presionar()
 
 def Pagar():
+    import time
     clear()
     global usr
-    while True:
-        db=js.ReadJson(js.JSON_CUENTAS)
-        for g, i in db[usr]["CARRITO"].items():
-                            print(f"""
-                                --------Producto--------
-                                Nombre: {g}
-                                Precio: {[usr]["CARRITO"][g]["PRECIO"]}
-                                Cantidad: {[usr]["CARRITO"][g]["CANTIDAD"]}
-                                """)
-                            total += [usr]["CARRITO"][g]["PRECIO"]
-        print(f"El Valor total del carrito es de {total}")
-        op=input("Para continuar con el proceso de pago presione S para cancelarlo N").strip().upper()
-        match op:
-            case "S":
-                MetodoPago()
-                db[usr]["CARRITO"].clear()
-                return
-            case "N":
-                print("Saliendo al menu principal")
-                t.sleep(2)
-                return
-            case _:
-                print("Valor no soportado")
-                presionar()
-                break
+
+    db = js.ReadJson(js.JSON_CUENTAS)
+
+    # Verificar usuario
+    if usr not in db:
+        print(f"Usuario '{usr}' no encontrado.")
+        presionar()
+        return
+
+    # Asegurar que CARRITO exista
+    carrito = db[usr].get("CARRITO", {})
+    if not isinstance(carrito, dict):
+        carrito = {}
+        db[usr]["CARRITO"] = {}
+
+    # Si está vacío
+    if not carrito:
+        print("Su carrito está vacío.")
+        presionar()
+        return
+
+    total = 0
+    for nombre, item in carrito.items():
+        cantidad = item.get("CANTIDAD", 0)
+        precio_total = item.get("PRECIO", 0)
+
+        print(f"""
+========================
+--------Producto--------
+======================== 
+    Nombre: {nombre}
+    Cantidad: {cantidad}
+    Subtotal: {precio_total}
+========================
+""")
+        total += precio_total
+
+    print(f"El valor total del carrito es de {total}")
+
+    op = input("Presione S para continuar con el pago, o N para cancelarlo: ").strip().upper()
+    if op == "S":
+        MetodoPago()  # Procesar pago
+
+        # Vaciar carrito y guardar
+        db[usr]["CARRITO"] = {}
+        js.UpdateJson(js.JSON_CUENTAS, db[usr], [usr])
+
+        print("Pago realizado exitosamente. Su carrito ha sido vaciado.")
+        presionar()
+        return
+
+    elif op == "N":
+        print("Saliendo al menú principal...")
+        time.sleep(2)
+        return
+
+    else:
+        print("Valor no soportado")
+        presionar()
+        return
+
 
 def MetodoPago():
     while True:
-        try:
-            clear()
-            print(""" 
-        =============================
-        --💳Elije el metodo de pago--
-        =============================
-            - 1. Tarjeta de credito *
-            - 2. Tarjeta debito     *
-            - 3. PSE                *
-                                    *
-        =============================
+        clear()
+        print(""" 
+=============================
+--💳Elije el metodo de pago--
+=============================
+    - 1. Tarjeta de credito *
+    - 2. Tarjeta debito     *
+    - 3. PSE                *
+                            *
+=============================
 
         """)
-            metodo=str(input("Porfavor ingrese el metodo de pago a usar (Tarjeta|Nequi): ")).strip().upper()
-            match metodo:
-                case "TARJETA":
-                    numeroTarjeta=int(input("Ingrese el numero de su tarjeta: "))
-                    fecha=str(input("Ingrese la fecha en la cual fue expedida la tarjeta"))
-                    ccv=int(input("Ingrese el CCV de su tarjeta: "))
-                    if len(ccv) == 3:
-                       print("Gracias por tu compra todos los elementos de tu carrito han sido pagados")
-                       presionar()
-                       return 
-                    else:
-                        print("El ccv proporcionado no es valido, abortado el pago")
-                        t.sleep(1)
-                        break
-                case "NEQUI":
-                    codigo=int(input("Ingrese su clave dinamica: "))
-                    if len(codigo) != 6:
-                        print("El codigo proporcionado no es valido, abortado el pago")
-                        t.sleep(1)
-                        break 
-                    else: 
-                        print("Gracias por tu compra todos los elementos de tu carrito han sido pagados")
-                        presionar()
-                        return
-                case _: 
-                    print("Porfavor elija una de las opciones dadas")
+        metodo = str(input("Porfavor ingrese el metodo de pago a usar (Tarjeta|Nequi): ")).strip()
+        match metodo:
+            case "1":
+                numeroTarjeta = int(input("Ingrese el numero de su tarjeta: "))
+                fecha = str(input("Ingrese la fecha en la cual fue expedida la tarjeta"))
+                # Leer como string para poder usar len()
+                ccv = input("Ingrese el CCV de su tarjeta: ").strip()
+
+                # validar que sean dígitos y longitud correcta
+                if ccv.isdigit() and len(ccv) == 3:
+                    print("Gracias por tu compra todos los elementos de tu carrito han sido pagados")
                     presionar()
+                    return 
+                else:
+                    print("El ccv proporcionado no es valido, abortado el pago")
+                    t.sleep(1)
                     break
-        except ValueError:
-            print("Valor no soportado")
-            presionar() 
-              
+
+            case "2":
+                # Leer como string para poder usar len()
+                codigo = input("Ingrese su clave dinamica: ").strip()
+
+                # validar que sean dígitos y longitud correcta
+                if not (codigo.isdigit() and len(codigo) == 6):
+                    print("El codigo proporcionado no es valido, abortado el pago")
+                    t.sleep(1)
+                    break 
+                else: 
+                    print("Gracias por tu compra todos los elementos de tu carrito han sido pagados")
+                    presionar()
+                    return
+
+            case _: 
+                print("Porfavor elija una de las opciones dadas")
+                presionar()
+
+
 def MostrarProductos():
     clear()
     db = js.ReadJson(js.JSON_TIENDAS)
-    for x,i in db.items():
+
+    for tienda, datos in db.items():
         try:
-            for t in i:
-                if t == "PRODUCTOS":
-                    for g in i["r"].keys():
-                        prodcuto = g
-                        print(f"""
-                            --------Producto--------
-                            Producto: {prodcuto}
-                            Precio: {i["r"][g]}
-                            Tienda: {i["NOM"]}
-                            """)
-        except:
-            pass
+            productos = datos.get("PRODUCTOS", {})
+            for nombre, info in productos.items():
+                print(f"""
+========================
+------- Producto --------
+========================
+    Nombre: {nombre}
+    Precio: {info['PRECIO']}
+    Cantidad: {info['CANTIDAD']}
+    Tienda: {datos.get('NOM', tienda)}
+========================
+                """)
+        except Exception as e:
+            print("Error al mostrar productos:", e)
+    presionar()

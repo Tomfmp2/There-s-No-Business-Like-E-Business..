@@ -89,23 +89,21 @@ def menu_usuario():
     while True:
         dm.clear()
         print("""
-        ===================================
-                👤 Menú Usuario
-        ===================================
-        1. Ver productos
-        2. Comprar
-        3. Cerrar sesión
+===================================
+        👤 Menú Usuario
+===================================
+    1. Ver productos
+    2. Ver carrito
+    3. Cerrar sesión
+===================================
         """)
         opcion = input("Seleccione una opción: ")
         if opcion == "1":
             dm.MostrarProductos()
-            subMenuUsusario()
-            dm.presionar()
         elif opcion == "2":
-            metodoPago()  #Falta funcionnnnn
-            dm.presionar()
+            subMenuUsusario()
         elif opcion == "3":
-            break
+            break   
         else:
             print("⚠️ Opción inválida")
             dm.presionar()
@@ -116,27 +114,38 @@ def subMenuUsusario():
     while True:
         dm.clear()
         print("""
-        =========================
-        ---❓Que deseas hacer---
-        =========================
-        - 1. Agregar producto   :
-        - 2. Quitar producto    :
-        - 3. Salir              :
-        =========================
+        =================================
+        -----------🛒 Carrito------------
+        =================================
+        - 1. Ver productos guardados    :
+        - 2. Agregar producto           :
+        - 3. Quitar producto            :
+        - 4. Pagar                      :
+        - 5. Salir                      :
+        =================================
 
         """)
-        opcion = int(input("Ingrese una opcion: "))
-        if opcion == 1:
-            dm.AgregarProductoCarrito()
-        elif opcion == 2:
-            dm.EliminarDelCarrito()
-        else:
-            break
+        opcion = input("Ingrese una opcion: ")
+        match opcion:
+            case "1":
+                dm.VerProductosCarrito()
+            case "2":
+                dm.AgregarProductoCarrito()
+            case "3":
+                dm.EliminarDelCarrito()  
+            case "4":
+                dm.Pagar()
+                print("Gracias por su compra")
+                dm.presionar()
+            case "5":
+                return
+            case _:
+                print("⚠️ Opción inválida")
+                dm.presionar()
 
 
 
 # Menú dueño/vendedor
-
 def menu_dueño():
     while True:
         dm.clear()
@@ -152,7 +161,7 @@ def menu_dueño():
         """)
         opcion = input("Seleccione una opción: ")
         if opcion == "1":
-            dm.MostrarProductos()
+            dm.VerProductosMiTienda()
             dm.presionar()
         elif opcion == "2":
             dm.AgregarProductoTienda()
@@ -166,33 +175,7 @@ def menu_dueño():
             print("⚠️ Opción inválida")
             dm.presionar()
 
-def metodoPago():
-    while True:
-        dm.clear()
-        print(""" 
-        =============================
-        --💳Elije el metodo de pago--
-        =============================
-            - 1. Tarjeta de credito *
-            - 2. Tarjeta debito     *
-            - 3. PSE                *
-                                    *
-        =============================
-
-        """)
-        opcion = int(input('Ingrese una opcion: '))
-        if opcion == 1:
-            pass 
-        elif opcion == 2:
-            pass
-        elif opcion == 3:
-            pass
-        else:
-            dm.clear()
-            print('Ingreso una opcion valida')
-            dm.presionar()
-            
-            
+# Menú admin            
 def vistaAdmin():
     while True:
         dm.clear()
