@@ -34,7 +34,7 @@ def RegistrarNombre():
 def RegistrarUser():
     while True:
         clear()
-        RegistroUser = str(input("Ingrese su nombre de usuario: "))
+        RegistroUser = str(input("Ingrese su nombre de usuario: ")).strip().upper()
         Datos = js.ReadJson(js.JSON_CUENTAS)
         if RegistroUser in Datos:
             clear()
@@ -204,9 +204,12 @@ def Login(Op : int):
                 return
             else:
                 print("Contraseña incorrecta")
+                presionar()
                 clear()
       else: 
          print("Usuario no encontrado")
+
+         presionar()
          clear()  
 
   case 1:
@@ -226,9 +229,11 @@ def Login(Op : int):
                 return
             else:
                 print("Contraseña incorrecta")
+                presionar()
                 clear()
       else: 
          print("Usuario no encontrado")
+         presionar()
          clear()
 
 def AgregarOtravez ():
@@ -282,7 +287,7 @@ def AgregarProductoTienda():
     global usr
     while True:
         nombreProducto = input('Ingrese el nombre del producto a Agregar:')
-        if nombreProducto in db: 
+        if nombreProducto in db[usr]["PRODUCTOS"]: 
             clear()
             print('Nombre de producto ya registrado.. intente otra vez')
             presionar()
@@ -291,16 +296,14 @@ def AgregarProductoTienda():
             
             while True:
                 try:
-                    precio = int(input(f'Ingrese el Precio del producto {nombreProducto}:\n'))
+                    precio = int(input(f'Ingrese el Precio del producto {nombreProducto}: '))
                     cantidad = CantidadProducto()
                     producto =  {nombreProducto:{
                             "PRECIO": precio,
                             "CANTIDAD": cantidad
                             }
-                        
                         }
-                    
-                    js.UpdateJson(js.JSON_TIENDAS, producto, [usr]["PRODUCTOS"])
+                    js.UpdateJson(js.JSON_TIENDAS, producto, [usr,"PRODUCTOS"])
                     opcion=AgregarOtravez()
                     if opcion == "S":
                         break
@@ -313,19 +316,20 @@ def AgregarProductoTienda():
 
 def EliminarProductoTienda():
     global usr
-    db2=js.ReadJson(js.JSON_CUENTAS)
+    db2=js.ReadJson(js.JSON_TIENDAS)
     while True:
-       for g, i in db2[usr]["PRODUCTOS"].keys():
+       for g, i in db2[usr]["PRODUCTOS"].items():
                             print(f"""
                                 --------Producto--------
                                 Nombre: {g}
-                                Precio: {[usr]["PRODUCTOS"][g]["PRECIO"]}
-                                Cantidad: {[usr]["PRODUCTOS"][g]["CANTIDAD"]}
+                                Precio: {i["PRECIO"]}
+                                Cantidad: {i["CANTIDAD"]}
                                 """) 
        while True:  
             producto=input("Porfavor ingrese el nombre del producto que desea eliminar: ")
             if producto in db2[usr]["PRODUCTOS"].keys():
                 del db2[usr]["PRODUCTOS"][producto]
+                js.UpdateJson(js.JSON_TIENDAS, db2)
                 print(f"Producto {producto} eliminado correctamente")
                 presionar()
                 op=ElminiarOtraVez()
@@ -356,7 +360,7 @@ def AgregarProductoCarrito():
                                 "PRECIO": db[tienda]["PRODUCTOS"][producto]["VALOR"]
                                     }
                                 }
-                            js.UpdateJson(js.JSON_CUENTAS, dic, [usr]["CARRITO"])
+                            js.UpdateJson(js.JSON_CUENTAS, dic, [usr, "CARRITO"])
                             print(f"El producto {producto} de la tienda {tienda} a sido agregado correctamente a su carrito")
                             presionar()
                             opcion=AgregarOtravez()
@@ -378,7 +382,7 @@ def AgregarProductoCarrito():
                                 "PRECIO": precio
                                     }
                                 }
-                    js.UpdateJson(js.JSON_CUENTAS, dic, [usr]["CARRITO"])
+                    js.UpdateJson(js.JSON_CUENTAS, dic, [usr, "CARRITO"])
                     print(f"El producto {producto} de la tienda {tienda} a sido agregado correctamente a su carrito")
                     presionar()
                     opcion=AgregarOtravez()
@@ -449,6 +453,17 @@ def MetodoPago():
     while True:
         try:
             clear()
+            print(""" 
+        =============================
+        --💳Elije el metodo de pago--
+        =============================
+            - 1. Tarjeta de credito *
+            - 2. Tarjeta debito     *
+            - 3. PSE                *
+                                    *
+        =============================
+
+        """)
             metodo=str(input("Porfavor ingrese el metodo de pago a usar (Tarjeta|Nequi): ")).strip().upper()
             match metodo:
                 case "TARJETA":

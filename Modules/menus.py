@@ -150,23 +150,22 @@ def menu_dueño():
             4. Cerrar sesión
         ================================
         """)
-"""def uno():
         opcion = input("Seleccione una opción: ")
-    if opcion == "1":
-        dm.MostrarProductos()
-        dm.presionar()
-    elif opcion == "2":
-        dm.AgregarProductoTienda()
-        dm.presionar()
-    elif opcion == "3":
-        dm.EliminarProductoTienda()
-        dm.presionar()
-    elif opcion == "4":
-        break
-    else:
-        print("⚠️ Opción inválida")
-        dm.presionar()
-"""
+        if opcion == "1":
+            dm.MostrarProductos()
+            dm.presionar()
+        elif opcion == "2":
+            dm.AgregarProductoTienda()
+            dm.presionar()
+        elif opcion == "3":
+            dm.EliminarProductoTienda()
+            dm.presionar()
+        elif opcion == "4":
+            break
+        else:
+            print("⚠️ Opción inválida")
+            dm.presionar()
+
 def metodoPago():
     while True:
         dm.clear()
