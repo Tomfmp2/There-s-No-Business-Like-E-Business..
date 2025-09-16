@@ -421,9 +421,10 @@ def VerProductosCarrito():
         op = input("¿Desea proceder al pago? (S/N): ").strip().upper()
         match op:
             case "S":
+                Pagar()
                 return
             case "N":
-                continue
+                return
             case _:
                 print("Valor no soportado")
                 presionar()
@@ -444,24 +445,28 @@ def AgregarProductoCarrito():
                             dic={
                                 producto: {
                                 "CANTIDAD": cantidad,
-                                "PRECIO": db[tienda]["PRODUCTOS"][producto]["PRECIO"]
+                                "PRECIO": db[tienda]["PRODUCTOS"][producto]["PRECIO"] * cantidad
                                     }
                                 }
                             js.UpdateJson(js.JSON_CUENTAS, dic, [usr, "CARRITO"])
+                            ct= db[tienda]["PRODUCTOS"][producto]
+                            ct -= cantidad
+                            js.UpdateJson(js.JSON_TIENDAS, db)
                             print(f"El producto {producto} de la tienda {tienda} a sido agregado correctamente a su carrito")
                             presionar()
                             opcion=AgregarOtravez()
                             if opcion == "S":
                                 break
                             else:
-                               return
+                                return
                         else:
                             print("El valor ingresado no es soportado, intente de nuevo porfavor")
                             presionar()
+                            break
                 elif producto in db2[usr]["CARRITO"]:
                     cantidad=int(input("Porfavor ingrese la cantidad del producto que desea agregar al carrito (Este ya se encuentra en el carrito): "))
                     precio=db2[usr]["CARRITO"][producto]["PRECIO"]
-                    precio=db[tienda]["PRODUCTOS"][producto]["VALOR"] * cantidad
+                    precio=db[tienda]["PRODUCTOS"][producto]["PRECIO"] * cantidad
                     cantidadtot=db2[usr]["CARRITO"][producto]["CANTIDAD"] + cantidad
                     dic={
                                 producto: {
@@ -470,6 +475,8 @@ def AgregarProductoCarrito():
                                     }
                                 }
                     js.UpdateJson(js.JSON_CUENTAS, dic, [usr, "CARRITO"])
+                    db[tienda]["PRODUCTOS"][producto] -= cantidad
+                    js.UpdateJson(js.JSON_TIENDAS, db)
                     print(f"El producto {producto} de la tienda {tienda} a sido agregado correctamente a su carrito")
                     presionar()
                     opcion=AgregarOtravez()
@@ -489,20 +496,21 @@ def EliminarDelCarrito():
     global usr
     while True:
         db=js.ReadJson(js.JSON_CUENTAS)
-        for g, i in db[usr]["CARRITO"].keys():
+        for g, i in db[usr]["CARRITO"].items():
                             print(f"""
 ====================================                            
 --------------Producto--------------
 ====================================                                
     Nombre: {g}
-    Precio: {[usr]["CARRITO"][g]["PRECIO"]}
-    Cantidad: {[usr]["CARRITO"][g]["CANTIDAD"]}
+    Precio: {i["PRECIO"]}
+    Cantidad: {i["CANTIDAD"]}
 ====================================
 """)
         while True:  
             producto=input("Porfavor ingrese el nombre del producto que desea eliminar de su carrito: ").strip().upper()
             if producto in db[usr]["CARRITO"].keys():
                 del db[usr]["CARRITO"][producto]
+                js.UpdateJson(js.JSON_CUENTAS,db)
                 print(f"Producto {producto} eliminado correctamente")
                 presionar()
                 op=ElminiarOtraVez()

@@ -1,0 +1,28 @@
+{
+    "PAPO": {
+        "NOMBRE": "TOMAS PPENUDO",
+        "EDAD": 20,
+        "TELEFONO": "3218824458",
+        "DIRECCION": "fkdlfk",
+        "CONTRASENA": "TOM11",
+        "PRODUCTOS": {
+            "CONOS": {
+                "PRECIO": 200,
+                "CANTIDAD": 12
+            }
+        }
+    },
+    "CAREVERGA": {
+        "NOMBRE": "ANDRES PENE",
+        "EDAD": 44,
+        "TELEFONO": "1234567890",
+        "DIRECCION": "dfkalskd",
+        "CONTRASENA": "TOM44",
+        "PRODUCTOS": {
+            "PENES": {
+                "PRECIO": 20000,
+                "CANTIDAD": 200
+            }
+        }
+    }
+}
